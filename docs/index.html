@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AI 出海营销助手 · 静态演示</title>
+<style>
+:root{
+  --bg:#ffffff; --bg-soft:#f7f8fa; --line:#e6e8ec; --text:#1f2329; --muted:#6b7280;
+  --primary:#4f46e5; --primary-soft:#eef0ff; --ok:#0f9d58; --warn:#d97706; --danger:#dc2626;
+  --radius:10px;
+}
+*{box-sizing:border-box}
+body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;
+  color:var(--text);background:var(--bg);font-size:15px;line-height:1.65;-webkit-font-smoothing:antialiased}
+a{color:var(--primary)}
+.wrap{display:flex;min-height:100vh}
+.sidebar{width:272px;flex:0 0 272px;background:var(--bg-soft);border-right:1px solid var(--line);padding:22px 16px;position:sticky;top:0;height:100vh;overflow:auto}
+.sidebar h1{font-size:17px;margin:0 0 4px}
+.sidebar .cap{font-size:12px;color:var(--muted);margin-bottom:18px}
+.sidebar .label{font-size:12px;font-weight:600;color:var(--muted);letter-spacing:.02em;margin:16px 0 8px}
+.nav-btn{display:block;width:100%;text-align:left;padding:9px 12px;margin-bottom:8px;border-radius:8px;border:1px solid var(--line);
+  background:#fff;color:var(--text);font-size:14px;cursor:pointer;transition:.15s}
+.nav-btn:hover{border-color:#c7cbd6}
+.nav-btn.active{background:var(--primary);border-color:var(--primary);color:#fff;font-weight:600}
+.note-box{font-size:12px;color:var(--muted);border-top:1px solid var(--line);margin-top:18px;padding-top:14px}
+.badge{display:inline-block;font-size:12px;padding:2px 8px;border-radius:999px;background:var(--primary-soft);color:var(--primary)}
+.main{flex:1;min-width:0;padding:28px 36px 80px;max-width:1180px}
+h2{font-size:21px;margin:0 0 6px}
+.sub{color:var(--muted);font-size:13px;margin-bottom:20px}
+h3{font-size:16px;margin:24px 0 10px}
+h4{font-size:15px;margin:0 0 8px}
+.card{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:16px 18px}
+.grid{display:grid;gap:14px}
+.g3{grid-template-columns:repeat(3,minmax(0,1fr))}
+.g4{grid-template-columns:repeat(4,minmax(0,1fr))}
+.g6{grid-template-columns:repeat(6,minmax(0,1fr))}
+.g2{grid-template-columns:repeat(2,minmax(0,1fr))}
+@media(max-width:960px){.g6{grid-template-columns:repeat(3,1fr)}.g4{grid-template-columns:repeat(2,1fr)}.g3{grid-template-columns:1fr}}
+@media(max-width:760px){.wrap{flex-direction:column}.sidebar{width:auto;flex:none;height:auto;position:static}.main{padding:20px}.g6,.g4,.g2{grid-template-columns:1fr 1fr}}
+table{width:100%;border-collapse:collapse;font-size:13.5px}
+th,td{padding:9px 10px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+th{color:var(--muted);font-weight:600;background:var(--bg-soft);white-space:nowrap}
+tr:last-child td{border-bottom:none}
+.tbl-wrap{border:1px solid var(--line);border-radius:var(--radius);overflow:hidden}
+.metric{border:1px solid var(--line);border-radius:var(--radius);padding:12px 14px;background:#fff}
+.metric .k{font-size:12px;color:var(--muted)}
+.metric .v{font-size:22px;font-weight:650;margin-top:2px}
+.metric .v small{font-size:13px;color:var(--muted);font-weight:400}
+.bar{height:8px;border-radius:999px;background:#eceef3;overflow:hidden;margin-top:10px}
+.bar>i{display:block;height:100%;background:linear-gradient(90deg,#6366f1,#8b5cf6);border-radius:999px}
+.pill{display:inline-block;font-size:12px;padding:2px 9px;border-radius:999px;border:1px solid var(--line)}
+.pill.high{background:#e9f8ef;color:#0b7a44;border-color:#c6ebd5}
+.pill.medium{background:#fff7e6;color:#a15c00;border-color:#f3dfb4}
+.pill.low{background:#fdeceb;color:#a12626;border-color:#f5c9c5}
+.pill.ok{background:#e9f8ef;color:#0b7a44;border-color:#c6ebd5}
+.pill.bad{background:#fdeceb;color:#a12626;border-color:#f5c9c5}
+button.act{appearance:none;border:1px solid var(--primary);background:var(--primary);color:#fff;border-radius:8px;
+  padding:9px 16px;font-size:14px;cursor:pointer;font-weight:600}
+button.act:hover{filter:brightness(1.05)}
+button.ghost{background:#fff;color:var(--text);border:1px solid var(--line);font-weight:500}
+button.ghost:hover{border-color:#c7cbd6}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.divider{height:1px;background:var(--line);margin:22px 0}
+.caption{font-size:12px;color:var(--muted);margin-top:8px}
+label.fld{display:block;font-size:13px;color:var(--muted);margin:12px 0 6px}
+input[type=text],textarea,select{width:100%;border:1px solid var(--line);border-radius:8px;padding:9px 11px;font-size:14px;
+  font-family:inherit;color:var(--text);background:#fff}
+textarea{resize:vertical;line-height:1.6}
+input:focus,textarea:focus,select:focus{outline:2px solid var(--primary-soft);border-color:var(--primary)}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:8px;overflow:hidden}
+.seg button{border:0;background:#fff;padding:8px 16px;font-size:14px;cursor:pointer;color:var(--text)}
+.seg button.on{background:var(--primary-soft);color:var(--primary);font-weight:600}
+.md{font-size:14px}
+.md h3{font-size:17px;margin:18px 0 8px}
+.md h4{font-size:15px;margin:16px 0 6px}
+.md p{margin:8px 0}
+.md ul,.md ol{margin:8px 0;padding-left:22px}
+.md li{margin:3px 0}
+.md blockquote{margin:12px 0;padding:8px 14px;border-left:3px solid var(--primary);background:var(--primary-soft);
+  color:#3f3f6b;border-radius:0 6px 6px 0;font-size:13.5px}
+.md strong{font-weight:650}
+.hidden{display:none}
+.status-sel{border:1px solid var(--line);border-radius:6px;padding:3px 6px;font-size:13px;background:#fff}
+.step-fade{animation:fade .35s ease}
+@keyframes fade{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+.toast{position:fixed;right:22px;bottom:22px;background:#1f2329;color:#fff;padding:10px 16px;border-radius:8px;
+  font-size:13px;opacity:0;transform:translateY(8px);transition:.25s;pointer-events:none;z-index:99}
+.toast.show{opacity:1;transform:none}
+footer{margin-top:36px;font-size:12px;color:var(--muted);border-top:1px solid var(--line);padding-top:14px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <aside class="sidebar">
+    <h1>AI 出海营销助手</h1>
+    <div class="cap">模拟数据 Demo · 静态演示版</div>
+    <div class="label">演示流程</div>
+    <div id="nav"></div>
+    <div class="label">当前客户</div>
+    <select id="lead-select"></select>
+    <div class="note-box">
+      本页为 Streamlit 原版的静态快照：评分、文案与方案由 <strong>Python 规则 / 模板离线生成</strong>后嵌入页面，不使用大模型、不发送任何内容。
+    </div>
+    <div class="note-box">
+      <a href="https://github.com/LH-boo/ceshi" target="_blank" rel="noopener">查看源码 →</a>
+    </div>
+  </aside>
+  <main class="main" id="main"></main>
+</div>
+<div class="toast" id="toast"></div>
+<script id="demo-data" type="application/json">{"leads":[{"id":"lead_001","company_name":"NovaMind AI","industry":"AI SaaS","product":"面向中小团队的 AI 文档与知识助手","website":"https://example.com/novamind-ai","current_market":"China","target_markets":["US","UK"],"english_content":"minimal","overseas_social":false,"content_activity":"low","marketing_gaps":["limited English content","low overseas brand awareness","no consistent overseas lead source"],"signals":["public roadmap mentions a US launch","hiring an overseas growth role"],"budget_status":"estimated","budget_note":"预算假设：每月 3,000–5,000 美元（Demo 假设，未经确认）","notes":"模拟数据，需对照官网、招聘信息和社媒动态做来源核验。"},{"id":"lead_002","company_name":"Pixelforge Studio","industry":"AI SaaS","product":"AI 视觉素材生成工具（团队订阅制）","website":"https://example.com/pixelforge","current_market":"Germany","target_markets":["Germany","France"],"english_content":"moderate","overseas_social":true,"content_activity":"medium","marketing_gaps":["content localized mostly for DACH region","limited localized landing pages"],"signals":["published an English product page","attended an EU design conference"],"budget_status":"unknown","budget_note":"暂无预算线索","notes":"模拟数据，需核验其本地化进展。"},{"id":"lead_003","company_name":"LumenFlow Analytics","industry":"AI SaaS","product":"面向电商团队的 AI 数据分析平台","website":"https://example.com/lumenflow","current_market":"China","target_markets":["US"],"english_content":"minimal","overseas_social":false,"content_activity":"medium","marketing_gaps":["no English SEO content","few overseas case studies"],"signals":["publishing English blog posts since Q3"],"budget_status":"explicit","budget_note":"Demo 假设：已为海外推广预留季度预算","notes":"模拟数据，预算状态需与销售确认。"},{"id":"lead_004","company_name":"Cotidi Labs","industry":"AI hardware","product":"AI 会议硬件设备","website":"https://example.com/cotidi","current_market":"China","target_markets":["Global"],"english_content":"moderate","overseas_social":true,"content_activity":"high","marketing_gaps":["hardware launch content lacks localized messaging"],"signals":["running a crowdfunding campaign"],"budget_status":"unknown","budget_note":"暂无预算线索","notes":"模拟数据；硬件类客户与内容营销服务的匹配度较低。"},{"id":"lead_005","company_name":"Verba Health AI","industry":"AI SaaS","product":"面向诊所的 AI 病历与随访工具","website":"https://example.com/verba","current_market":"China","target_markets":[],"english_content":"strong","overseas_social":false,"content_activity":"medium","marketing_gaps":["no clear overseas market priority"],"signals":[],"budget_status":"unknown","budget_note":"暂无预算线索","notes":"模拟数据；医疗行业合规要求高，出海意图尚不明确。"}],"per_lead":{"lead_001":{"analysis":{"lead_id":"lead_001","company_name":"NovaMind AI","score":86,"priority":"high","priority_label":"高优先级","dimensions":{"target_market":{"score":25,"max":25,"reason":"明确提到 2 个目标市场（US、UK）"},"product_fit":{"score":25,"max":25,"reason":"行业为 AI SaaS，与 AI SaaS 目标客户高度匹配"},"marketing_gap":{"score":22,"max":25,"reason":"英文内容与海外社媒基础薄弱；资料记录的缺口：limited English content、low overseas brand awareness、no consistent overseas lead source"},"signals":{"score":8,"max":15,"reason":"已观察到出海信号：public roadmap mentions a US launch、hiring an overseas growth role"},"budget":{"score":6,"max":10,"reason":"有预算假设但未确认"}},"reasons":["明确提到 2 个目标市场（US、UK）","行业为 AI SaaS，与 AI SaaS 目标客户高度匹配","英文内容与海外社媒基础薄弱；资料记录的缺口：limited English content、low overseas brand awareness、no consistent overseas lead source","已观察到出海信号：public roadmap mentions a US launch、hiring an overseas growth role","有预算假设但未确认"],"pain_points":["可能存在的缺口：limited English content","可能存在的缺口：low overseas brand awareness","可能存在的缺口：no consistent overseas lead source"],"questions":["目前进入 US, UK 的节奏和目标是什么？","现有英文官网、内容与社媒数据大致处于什么水平？","这一轮试点的预算范围、决策人和审批流程是怎样的？"],"facts":["企业类型：AI SaaS","当前市场：China","目标市场：US, UK"],"to_verify":["预算假设：每月 3,000–5,000 美元（Demo 假设，未经确认）","public roadmap mentions a US launch","hiring an overseas growth role"],"is_demo_data":true},"explanation":"**结论：建议优先跟进（86 分 / 高优先级）**\n\n**评分依据**\n- 明确提到 2 个目标市场（US、UK）\n- 行业为 AI SaaS，与 AI SaaS 目标客户高度匹配\n- 英文内容与海外社媒基础薄弱；资料记录的缺口：limited English content、low overseas brand awareness、no consistent overseas lead source\n- 已观察到出海信号：public roadmap mentions a US launch、hiring an overseas growth role\n- 有预算假设但未确认\n\n**可能存在的海外营销痛点**\n- 可能存在的缺口：limited English content\n- 可能存在的缺口：low overseas brand awareness\n- 可能存在的缺口：no consistent overseas lead source\n\n**首次沟通值得验证的问题**\n1. 目前进入 US, UK 的节奏和目标是什么？\n2. 现有英文官网、内容与社媒数据大致处于什么水平？\n3. 这一轮试点的预算范围、决策人和审批流程是怎样的？\n\n> 以上为基于模拟资料的规则判断，关键信息需在沟通中确认。","contact_email":{"subject":"Exploring NovaMind AI's growth in US and UK","body":"Hi there,\n\nI came across NovaMind AI and your work on 面向中小团队的 AI 文档与知识助手. From what's publicly available, it looks like US and UK is an active focus for you, and that limited English content may still be a work in progress.\n\nWe help AI SaaS teams at exactly this stage with:\n- English content and SEO foundations\n- LinkedIn content operations\n- A lightweight lead capture and follow-up process\n\nIf it's useful, I'd be happy to share a few specific content angles for US and UK and hear how you're approaching the market. Would a 20-minute call next week work for you? No deck required.\n\nBest regards,\n[Your name]\n[Company]","follow_up_plan":[{"day":"第 1 天","channel":"Email","action":"发送首次联系内容，并记录发送时间。"},{"day":"第 4 天","channel":"Email","action":"若无回复，发送简短跟进，补充一个具体的内容选题建议。"},{"day":"第 9 天","channel":"Email","action":"再次联系，附上一份简短的市场内容选题示例（1 页）。"},{"day":"随时","channel":"Email","action":"若对方明确拒绝或要求停止联系，立即停止跟进并记录原因。"}],"notes":"模板生成的演示邮件：仅使用了客户资料中的市场与产品信息，发送前需人工检查，Demo 不会真实发送。","channel":"Email","generated_by":"template"},"contact_linkedin":{"subject":"Quick note on NovaMind AI's US and UK content","body":"Hi, I've been following NovaMind AI's work and noticed US and UK is a focus for you. I work with AI SaaS teams on English content, LinkedIn operations and early lead generation. If limited English content is on your roadmap, I'd be glad to share two or three concrete content angles for US and UK — happy to compare notes in a 20-minute call if useful.","follow_up_plan":[{"day":"第 1 天","channel":"LinkedIn","action":"发送首次联系内容，并记录发送时间。"},{"day":"第 4 天","channel":"LinkedIn","action":"若无回复，发送简短跟进，补充一个具体的内容选题建议。"},{"day":"第 9 天","channel":"LinkedIn","action":"再次联系，附上一份简短的市场内容选题示例（1 页）。"},{"day":"随时","channel":"LinkedIn","action":"若对方明确拒绝或要求停止联系，立即停止跟进并记录原因。"}],"notes":"模板生成的 LinkedIn 演示消息：发送前需人工检查，Demo 不会真实发送。","channel":"LinkedIn","generated_by":"template"},"proposal":{"proposal_id":"proposal_001","lead_id":"lead_001","title":"NovaMind AI 海外内容营销 30 天试点方案","target_market":"US","duration":"30 天","current_state":"客户当前市场为 China，目标市场为 US、UK；已知缺口包括 limited English content、low overseas brand awareness、no consistent overseas lead source。客户回复要点：我们希望先验证美国市场，希望在一个月内提升英文内容曝光，并获得一批有价值的潜在客户。目前团队没有专职海外内容运营人员，希望先做一个小规模试点。","objectives":["验证 US 市场的英文内容方向","在一个月内提升英文内容的曝光与互动","获得一批可人工筛选的初步潜在客户"],"audience_hypothesis":["美国中小团队中负责运营、知识与文档协作的管理者","正在评估 AI 文档 / 知识助手的团队负责人","关注团队效率与知识沉淀的运营与 HR 角色"],"services":["受众与竞品内容分析","英文内容选题与撰写","US 市场 LinkedIn 内容运营","英文 SEO 内容基础建设","线索收集与初步筛选"],"workstream":["第 1–4 天：受众与竞品分析，确认产品卖点与内容基调","第 5–10 天：完成 4 篇英文内容选题与初稿","第 11–25 天：在 LinkedIn 与英文官网 / Blog 发布并互动","第 26–30 天：汇总数据、复盘并给出下一轮建议"],"deliverables":["英文内容选题表（4 条）","4 篇英文内容（LinkedIn + Blog）","发布记录与互动记录","线索汇总表","月度复盘报告"],"metrics":["内容曝光量","互动率（互动 / 曝光）","官网访问量（内容渠道）","潜在线索数与有效线索数"],"open_questions":["目标客户画像与优先级（团队规模、行业、决策角色）","产品卖点与可公开引用的客户案例","现有官网数据与转化路径","试点预算范围与审批流程"],"status":"draft","generated_by":"template","is_demo_data":true},"proposal_md":"### NovaMind AI 海外内容营销 30 天试点方案\n\n**目标市场：** US　|　**执行周期：** 30 天\n\n**1. 客户现状与核心目标**\n\n客户当前市场为 China，目标市场为 US、UK；已知缺口包括 limited English content、low overseas brand awareness、no consistent overseas lead source。客户回复要点：我们希望先验证美国市场，希望在一个月内提升英文内容曝光，并获得一批有价值的潜在客户。目前团队没有专职海外内容运营人员，希望先做一个小规模试点。\n\n- 验证 US 市场的英文内容方向\n- 在一个月内提升英文内容的曝光与互动\n- 获得一批可人工筛选的初步潜在客户\n\n**2. 目标市场与受众假设**\n\n- 美国中小团队中负责运营、知识与文档协作的管理者\n- 正在评估 AI 文档 / 知识助手的团队负责人\n- 关注团队效率与知识沉淀的运营与 HR 角色\n\n**3. 服务范围**\n\n- 受众与竞品内容分析\n- 英文内容选题与撰写\n- US 市场 LinkedIn 内容运营\n- 英文 SEO 内容基础建设\n- 线索收集与初步筛选\n\n**4. 执行节奏**\n\n- 第 1–4 天：受众与竞品分析，确认产品卖点与内容基调\n- 第 5–10 天：完成 4 篇英文内容选题与初稿\n- 第 11–25 天：在 LinkedIn 与英文官网 / Blog 发布并互动\n- 第 26–30 天：汇总数据、复盘并给出下一轮建议\n\n**5. 交付物**\n\n- 英文内容选题表（4 条）\n- 4 篇英文内容（LinkedIn + Blog）\n- 发布记录与互动记录\n- 线索汇总表\n- 月度复盘报告\n\n**6. 效果衡量指标**\n\n- 内容曝光量\n- 互动率（互动 / 曝光）\n- 官网访问量（内容渠道）\n- 潜在线索数与有效线索数\n\n**7. 待客户确认的问题**\n\n- 目标客户画像与优先级（团队规模、行业、决策角色）\n- 产品卖点与可公开引用的客户案例\n- 现有官网数据与转化路径\n- 试点预算范围与审批流程\n\n> 以上为模拟试点方案，不构成对实际曝光量、访问量或线索数量的保证。\n","tasks":[{"task_id":"task_001","title":"确认目标受众与产品卖点","owner_role":"策略","window":"第 1–2 天","deliverable":"受众画像、卖点表","status":"已完成（模拟）","proposal_id":"proposal_001"},{"task_id":"task_002","title":"制定英文内容选题","owner_role":"内容运营","window":"第 3–4 天","deliverable":"选题表","status":"已完成（模拟）","proposal_id":"proposal_001"},{"task_id":"task_003","title":"撰写英文内容","owner_role":"内容运营","window":"第 5–10 天","deliverable":"英文内容初稿","status":"进行中（模拟）","proposal_id":"proposal_001"},{"task_id":"task_004","title":"发布并记录数据","owner_role":"运营","window":"第 11–25 天","deliverable":"发布记录","status":"待执行（模拟）","proposal_id":"proposal_001"},{"task_id":"task_005","title":"汇总数据并复盘","owner_role":"运营 / 分析","window":"第 26–30 天","deliverable":"月度复盘报告","status":"待执行（模拟）","proposal_id":"proposal_001"}],"sample":{"linkedin_post":"Teams lose time when important knowledge is scattered across documents and conversations. An AI-powered knowledge assistant can help teams find relevant information faster and keep work moving. If your team is exploring better ways to manage internal knowledge, here's a practical use case to consider: start with the three documents your team searches for most often, connect them to one assistant, and measure how often people find answers without asking a colleague.\n\nCurious how other small teams structure this? We put together a short checklist — comment \"checklist\" and we'll share it.","topic_plan":[{"title":"Why scattered knowledge slows small teams down","angle":"知识分散带来的时间成本，用具体工作场景切入"},{"title":"5 document workflows you can automate with AI","angle":"文档审阅、周报、FAQ 等可自动化的流程清单"},{"title":"A practical guide to building a team knowledge base","angle":"从 0 到 1 搭建知识库的步骤与常见误区"},{"title":"How to evaluate an AI assistant before rolling it out","angle":"评估维度：准确性、权限、集成与团队接受度"}],"notes":"以上内容为 NovaMind AI 的演示交付样例：未使用客户真实数据，发布前需由客户确认产品卖点、可公开案例与 CTA 指向的落地页。","generated_by":"template"}},"lead_002":{"analysis":{"lead_id":"lead_002","company_name":"Pixelforge Studio","score":66,"priority":"medium","priority_label":"中优先级","dimensions":{"target_market":{"score":25,"max":25,"reason":"明确提到 2 个目标市场（Germany、France）"},"product_fit":{"score":25,"max":25,"reason":"行业为 AI SaaS，与 AI SaaS 目标客户高度匹配"},"marketing_gap":{"score":8,"max":25,"reason":"海外内容基础相对完善，缺口有限；资料记录的缺口：content localized mostly for DACH region、limited localized landing pages"},"signals":{"score":8,"max":15,"reason":"已观察到出海信号：published an English product page、attended an EU design conference"},"budget":{"score":0,"max":10,"reason":"预算未知（不默认给高分）"}},"reasons":["明确提到 2 个目标市场（Germany、France）","行业为 AI SaaS，与 AI SaaS 目标客户高度匹配","海外内容基础相对完善，缺口有限；资料记录的缺口：content localized mostly for DACH region、limited localized landing pages","已观察到出海信号：published an English product page、attended an EU design conference"],"pain_points":["可能存在的缺口：content localized mostly for DACH region","可能存在的缺口：limited localized landing pages"],"questions":["目前进入 Germany, France 的节奏和目标是什么？","现有英文官网、内容与社媒数据大致处于什么水平？","这一轮试点的预算范围、决策人和审批流程是怎样的？"],"facts":["企业类型：AI SaaS","当前市场：Germany","目标市场：Germany, France"],"to_verify":["暂无预算线索","published an English product page","attended an EU design conference"],"is_demo_data":true},"explanation":"**结论：建议保持关注（66 分 / 中优先级）**\n\n**评分依据**\n- 明确提到 2 个目标市场（Germany、France）\n- 行业为 AI SaaS，与 AI SaaS 目标客户高度匹配\n- 海外内容基础相对完善，缺口有限；资料记录的缺口：content localized mostly for DACH region、limited localized landing pages\n- 已观察到出海信号：published an English product page、attended an EU design conference\n\n**可能存在的海外营销痛点**\n- 可能存在的缺口：content localized mostly for DACH region\n- 可能存在的缺口：limited localized landing pages\n\n**首次沟通值得验证的问题**\n1. 目前进入 Germany, France 的节奏和目标是什么？\n2. 现有英文官网、内容与社媒数据大致处于什么水平？\n3. 这一轮试点的预算范围、决策人和审批流程是怎样的？\n\n> 以上为基于模拟资料的规则判断，关键信息需在沟通中确认。","contact_email":{"subject":"Exploring Pixelforge Studio's growth in Germany and France","body":"Hi there,\n\nI came across Pixelforge Studio and your work on AI 视觉素材生成工具（团队订阅制）. From what's publicly available, it looks like Germany and France is an active focus for you, and that content localized mostly for DACH region may still be a work in progress.\n\nWe help AI SaaS teams at exactly this stage with:\n- English content and SEO foundations\n- LinkedIn content operations\n- A lightweight lead capture and follow-up process\n\nIf it's useful, I'd be happy to share a few specific content angles for Germany and France and hear how you're approaching the market. Would a 20-minute call next week work for you? No deck required.\n\nBest regards,\n[Your name]\n[Company]","follow_up_plan":[{"day":"第 1 天","channel":"Email","action":"发送首次联系内容，并记录发送时间。"},{"day":"第 4 天","channel":"Email","action":"若无回复，发送简短跟进，补充一个具体的内容选题建议。"},{"day":"第 9 天","channel":"Email","action":"再次联系，附上一份简短的市场内容选题示例（1 页）。"},{"day":"随时","channel":"Email","action":"若对方明确拒绝或要求停止联系，立即停止跟进并记录原因。"}],"notes":"模板生成的演示邮件：仅使用了客户资料中的市场与产品信息，发送前需人工检查，Demo 不会真实发送。","channel":"Email","generated_by":"template"},"contact_linkedin":{"subject":"Quick note on Pixelforge Studio's Germany and France content","body":"Hi, I've been following Pixelforge Studio's work and noticed Germany and France is a focus for you. I work with AI SaaS teams on English content, LinkedIn operations and early lead generation. If content localized mostly for DACH region is on your roadmap, I'd be glad to share two or three concrete content angles for Germany and France — happy to compare notes in a 20-minute call if useful.","follow_up_plan":[{"day":"第 1 天","channel":"LinkedIn","action":"发送首次联系内容，并记录发送时间。"},{"day":"第 4 天","channel":"LinkedIn","action":"若无回复，发送简短跟进，补充一个具体的内容选题建议。"},{"day":"第 9 天","channel":"LinkedIn","action":"再次联系，附上一份简短的市场内容选题示例（1 页）。"},{"day":"随时","channel":"LinkedIn","action":"若对方明确拒绝或要求停止联系，立即停止跟进并记录原因。"}],"notes":"模板生成的 LinkedIn 演示消息：发送前需人工检查，Demo 不会真实发送。","channel":"LinkedIn","generated_by":"template"},"proposal":{"proposal_id":"proposal_001","lead_id":"lead_002","title":"Pixelforge Studio 海外内容营销 30 天试点方案","target_market":"Germany","duration":"30 天","current_state":"客户当前市场为 Germany，目标市场为 Germany、France；已知缺口包括 content localized mostly for DACH region、limited localized landing pages。客户回复要点：我们希望先验证美国市场，希望在一个月内提升英文内容曝光，并获得一批有价值的潜在客户。目前团队没有专职海外内容运营人员，希望先做一个小规模试点。","objectives":["验证 Germany 市场的英文内容方向","在一个月内提升英文内容的曝光与互动","获得一批可人工筛选的初步潜在客户"],"audience_hypothesis":["美国中小团队中负责运营、知识与文档协作的管理者","正在评估 AI 文档 / 知识助手的团队负责人","关注团队效率与知识沉淀的运营与 HR 角色"],"services":["受众与竞品内容分析","英文内容选题与撰写","Germany 市场 LinkedIn 内容运营","英文 SEO 内容基础建设","线索收集与初步筛选"],"workstream":["第 1–4 天：受众与竞品分析，确认产品卖点与内容基调","第 5–10 天：完成 4 篇英文内容选题与初稿","第 11–25 天：在 LinkedIn 与英文官网 / Blog 发布并互动","第 26–30 天：汇总数据、复盘并给出下一轮建议"],"deliverables":["英文内容选题表（4 条）","4 篇英文内容（LinkedIn + Blog）","发布记录与互动记录","线索汇总表","月度复盘报告"],"metrics":["内容曝光量","互动率（互动 / 曝光）","官网访问量（内容渠道）","潜在线索数与有效线索数"],"open_questions":["目标客户画像与优先级（团队规模、行业、决策角色）","产品卖点与可公开引用的客户案例","现有官网数据与转化路径","试点预算范围与审批流程"],"status":"draft","generated_by":"template","is_demo_data":true},"proposal_md":"### Pixelforge Studio 海外内容营销 30 天试点方案\n\n**目标市场：** Germany　|　**执行周期：** 30 天\n\n**1. 客户现状与核心目标**\n\n客户当前市场为 Germany，目标市场为 Germany、France；已知缺口包括 content localized mostly for DACH region、limited localized landing pages。客户回复要点：我们希望先验证美国市场，希望在一个月内提升英文内容曝光，并获得一批有价值的潜在客户。目前团队没有专职海外内容运营人员，希望先做一个小规模试点。\n\n- 验证 Germany 市场的英文内容方向\n- 在一个月内提升英文内容的曝光与互动\n- 获得一批可人工筛选的初步潜在客户\n\n**2. 目标市场与受众假设**\n\n- 美国中小团队中负责运营、知识与文档协作的管理者\n- 正在评估 AI 文档 / 知识助手的团队负责人\n- 关注团队效率与知识沉淀的运营与 HR 角色\n\n**3. 服务范围**\n\n- 受众与竞品内容分析\n- 英文内容选题与撰写\n- Germany 市场 LinkedIn 内容运营\n- 英文 SEO 内容基础建设\n- 线索收集与初步筛选\n\n**4. 执行节奏**\n\n- 第 1–4 天：受众与竞品分析，确认产品卖点与内容基调\n- 第 5–10 天：完成 4 篇英文内容选题与初稿\n- 第 11–25 天：在 LinkedIn 与英文官网 / Blog 发布并互动\n- 第 26–30 天：汇总数据、复盘并给出下一轮建议\n\n**5. 交付物**\n\n- 英文内容选题表（4 条）\n- 4 篇英文内容（LinkedIn + Blog）\n- 发布记录与互动记录\n- 线索汇总表\n- 月度复盘报告\n\n**6. 效果衡量指标**\n\n- 内容曝光量\n- 互动率（互动 / 曝光）\n- 官网访问量（内容渠道）\n- 潜在线索数与有效线索数\n\n**7. 待客户确认的问题**\n\n- 目标客户画像与优先级（团队规模、行业、决策角色）\n- 产品卖点与可公开引用的客户案例\n- 现有官网数据与转化路径\n- 试点预算范围与审批流程\n\n> 以上为模拟试点方案，不构成对实际曝光量、访问量或线索数量的保证。\n","tasks":[{"task_id":"task_001","title":"确认目标受众与产品卖点","owner_role":"策略","window":"第 1–2 天","deliverable":"受众画像、卖点表","status":"已完成（模拟）","proposal_id":"proposal_001"},{"task_id":"task_002","title":"制定英文内容选题","owner_role":"内容运营","window":"第 3–4 天","deliverable":"选题表","status":"已完成（模拟）","proposal_id":"proposal_001"},{"task_id":"task_003","title":"撰写英文内容","owner_role":"内容运营","window":"第 5–10 天","deliverable":"英文内容初稿","status":"进行中（模拟）","proposal_id":"proposal_001"},{"task_id":"task_004","title":"发布并记录数据","owner_role":"运营","window":"第 11–25 天","deliverable":"发布记录","status":"待执行（模拟）","proposal_id":"proposal_001"},{"task_id":"task_005","title":"汇总数据并复盘","owner_role":"运营 / 分析","window":"第 26–30 天","deliverable":"月度复盘报告","status":"待执行（模拟）","proposal_id":"proposal_001"}],"sample":{"linkedin_post":"Teams lose time when important knowledge is scattered across documents and conversations. An AI-powered knowledge assistant can help teams find relevant information faster and keep work moving. If your team is exploring better ways to manage internal knowledge, here's a practical use case to consider: start with the three documents your team searches for most often, connect them to one assistant, and measure how often people find answers without asking a colleague.\n\nCurious how other small teams structure this? We put together a short checklist — comment \"checklist\" and we'll share it.","topic_plan":[{"title":"Why scattered knowledge slows small teams down","angle":"知识分散带来的时间成本，用具体工作场景切入"},{"title":"5 document workflows you can automate with AI","angle":"文档审阅、周报、FAQ 等可自动化的流程清单"},{"title":"A practical guide to building a team knowledge base","angle":"从 0 到 1 搭建知识库的步骤与常见误区"},{"title":"How to evaluate an AI assistant before rolling it out","angle":"评估维度：准确性、权限、集成与团队接受度"}],"notes":"以上内容为 Pixelforge Studio 的演示交付样例：未使用客户真实数据，发布前需由客户确认产品卖点、可公开案例与 CTA 指向的落地页。","generated_by":"template"}},"lead_003":{"analysis":{"lead_id":"lead_003","company_name":"LumenFlow Analytics","score":74,"priority":"medium","priority_label":"中优先级","dimensions":{"target_market":{"score":18,"max":25,"reason":"只提到 1 个具体目标市场（US）"},"product_fit":{"score":25,"max":25,"reason":"行业为 AI SaaS，与 AI SaaS 目标客户高度匹配"},"marketing_gap":{"score":17,"max":25,"reason":"海外内容体系仍在建设中；资料记录的缺口：no English SEO content、few overseas case studies"},"signals":{"score":4,"max":15,"reason":"已观察到出海信号：publishing English blog posts since Q3"},"budget":{"score":10,"max":10,"reason":"已有明确预算线索"}},"reasons":["只提到 1 个具体目标市场（US）","行业为 AI SaaS，与 AI SaaS 目标客户高度匹配","海外内容体系仍在建设中；资料记录的缺口：no English SEO content、few overseas case studies","已观察到出海信号：publishing English blog posts since Q3","已有明确预算线索"],"pain_points":["可能存在的缺口：no English SEO content","可能存在的缺口：few overseas case studies"],"questions":["目前进入 US 的节奏和目标是什么？","现有英文官网、内容与社媒数据大致处于什么水平？","这一轮试点的预算范围、决策人和审批流程是怎样的？"],"facts":["企业类型：AI SaaS","当前市场：China","目标市场：US"],"to_verify":["Demo 假设：已为海外推广预留季度预算","publishing English blog posts since Q3"],"is_demo_data":true},"explanation":"**结论：建议保持关注（74 分 / 中优先级）**\n\n**评分依据**\n- 只提到 1 个具体目标市场（US）\n- 行业为 AI SaaS，与 AI SaaS 目标客户高度匹配\n- 海外内容体系仍在建设中；资料记录的缺口：no English SEO content、few overseas case studies\n- 已观察到出海信号：publishing English blog posts since Q3\n- 已有明确预算线索\n\n**可能存在的海外营销痛点**\n- 可能存在的缺口：no English SEO content\n- 可能存在的缺口：few overseas case studies\n\n**首次沟通值得验证的问题**\n1. 目前进入 US 的节奏和目标是什么？\n2. 现有英文官网、内容与社媒数据大致处于什么水平？\n3. 这一轮试点的预算范围、决策人和审批流程是怎样的？\n\n> 以上为基于模拟资料的规则判断，关键信息需在沟通中确认。","contact_email":{"subject":"Exploring LumenFlow Analytics's growth in US","body":"Hi there,\n\nI came across LumenFlow Analytics and your work on 面向电商团队的 AI 数据分析平台. From what's publicly available, it looks like US is an active focus for you, and that no English SEO content may still be a work in progress.\n\nWe help AI SaaS teams at exactly this stage with:\n- English content and SEO foundations\n- LinkedIn content operations\n- A lightweight lead capture and follow-up process\n\nIf it's useful, I'd be happy to share a few specific content angles for US and hear how you're approaching the market. Would a 20-minute call next week work for you? No deck required.\n\nBest regards,\n[Your name]\n[Company]","follow_up_plan":[{"day":"第 1 天","channel":"Email","action":"发送首次联系内容，并记录发送时间。"},{"day":"第 4 天","channel":"Email","action":"若无回复，发送简短跟进，补充一个具体的内容选题建议。"},{"day":"第 9 天","channel":"Email","action":"再次联系，附上一份简短的市场内容选题示例（1 页）。"},{"day":"随时","channel":"Email","action":"若对方明确拒绝或要求停止联系，立即停止跟进并记录原因。"}],"notes":"模板生成的演示邮件：仅使用了客户资料中的市场与产品信息，发送前需人工检查，Demo 不会真实发送。","channel":"Email","generated_by":"template"},"contact_linkedin":{"subject":"Quick note on LumenFlow Analytics's US content","body":"Hi, I've been following LumenFlow Analytics's work and noticed US is a focus for you. I work with AI SaaS teams on English content, LinkedIn operations and early lead generation. If no English SEO content is on your roadmap, I'd be glad to share two or three concrete content angles for US — happy to compare notes in a 20-minute call if useful.","follow_up_plan":[{"day":"第 1 天","channel":"LinkedIn","action":"发送首次联系内容，并记录发送时间。"},{"day":"第 4 天","channel":"LinkedIn","action":"若无回复，发送简短跟进，补充一个具体的内容选题建议。"},{"day":"第 9 天","channel":"LinkedIn","action":"再次联系，附上一份简短的市场内容选题示例（1 页）。"},{"day":"随时","channel":"LinkedIn","action":"若对方明确拒绝或要求停止联系，立即停止跟进并记录原因。"}],"notes":"模板生成的 LinkedIn 演示消息：发送前需人工检查，Demo 不会真实发送。","channel":"LinkedIn","generated_by":"template"},"proposal":{"proposal_id":"proposal_001","lead_id":"lead_003","title":"LumenFlow Analytics 海外内容营销 30 天试点方案","target_market":"US","duration":"30 天","current_state":"客户当前市场为 China，目标市场为 US；已知缺口包括 no English SEO content、few overseas case studies。客户回复要点：我们希望先验证美国市场，希望在一个月内提升英文内容曝光，并获得一批有价值的潜在客户。目前团队没有专职海外内容运营人员，希望先做一个小规模试点。","objectives":["验证 US 市场的英文内容方向","在一个月内提升英文内容的曝光与互动","获得一批可人工筛选的初步潜在客户"],"audience_hypothesis":["美国中小团队中负责运营、知识与文档协作的管理者","正在评估 AI 文档 / 知识助手的团队负责人","关注团队效率与知识沉淀的运营与 HR 角色"],"services":["受众与竞品内容分析","英文内容选题与撰写","US 市场 LinkedIn 内容运营","英文 SEO 内容基础建设","线索收集与初步筛选"],"workstream":["第 1–4 天：受众与竞品分析，确认产品卖点与内容基调","第 5–10 天：完成 4 篇英文内容选题与初稿","第 11–25 天：在 LinkedIn 与英文官网 / Blog 发布并互动","第 26–30 天：汇总数据、复盘并给出下一轮建议"],"deliverables":["英文内容选题表（4 条）","4 篇英文内容（LinkedIn + Blog）","发布记录与互动记录","线索汇总表","月度复盘报告"],"metrics":["内容曝光量","互动率（互动 / 曝光）","官网访问量（内容渠道）","潜在线索数与有效线索数"],"open_questions":["目标客户画像与优先级（团队规模、行业、决策角色）","产品卖点与可公开引用的客户案例","现有官网数据与转化路径","试点预算范围与审批流程"],"status":"draft","generated_by":"template","is_demo_data":true},"proposal_md":"### LumenFlow Analytics 海外内容营销 30 天试点方案\n\n**目标市场：** US　|　**执行周期：** 30 天\n\n**1. 客户现状与核心目标**\n\n客户当前市场为 China，目标市场为 US；已知缺口包括 no English SEO content、few overseas case studies。客户回复要点：我们希望先验证美国市场，希望在一个月内提升英文内容曝光，并获得一批有价值的潜在客户。目前团队没有专职海外内容运营人员，希望先做一个小规模试点。\n\n- 验证 US 市场的英文内容方向\n- 在一个月内提升英文内容的曝光与互动\n- 获得一批可人工筛选的初步潜在客户\n\n**2. 目标市场与受众假设**\n\n- 美国中小团队中负责运营、知识与文档协作的管理者\n- 正在评估 AI 文档 / 知识助手的团队负责人\n- 关注团队效率与知识沉淀的运营与 HR 角色\n\n**3. 服务范围**\n\n- 受众与竞品内容分析\n- 英文内容选题与撰写\n- US 市场 LinkedIn 内容运营\n- 英文 SEO 内容基础建设\n- 线索收集与初步筛选\n\n**4. 执行节奏**\n\n- 第 1–4 天：受众与竞品分析，确认产品卖点与内容基调\n- 第 5–10 天：完成 4 篇英文内容选题与初稿\n- 第 11–25 天：在 LinkedIn 与英文官网 / Blog 发布并互动\n- 第 26–30 天：汇总数据、复盘并给出下一轮建议\n\n**5. 交付物**\n\n- 英文内容选题表（4 条）\n- 4 篇英文内容（LinkedIn + Blog）\n- 发布记录与互动记录\n- 线索汇总表\n- 月度复盘报告\n\n**6. 效果衡量指标**\n\n- 内容曝光量\n- 互动率（互动 / 曝光）\n- 官网访问量（内容渠道）\n- 潜在线索数与有效线索数\n\n**7. 待客户确认的问题**\n\n- 目标客户画像与优先级（团队规模、行业、决策角色）\n- 产品卖点与可公开引用的客户案例\n- 现有官网数据与转化路径\n- 试点预算范围与审批流程\n\n> 以上为模拟试点方案，不构成对实际曝光量、访问量或线索数量的保证。\n","tasks":[{"task_id":"task_001","title":"确认目标受众与产品卖点","owner_role":"策略","window":"第 1–2 天","deliverable":"受众画像、卖点表","status":"已完成（模拟）","proposal_id":"proposal_001"},{"task_id":"task_002","title":"制定英文内容选题","owner_role":"内容运营","window":"第 3–4 天","deliverable":"选题表","status":"已完成（模拟）","proposal_id":"proposal_001"},{"task_id":"task_003","title":"撰写英文内容","owner_role":"内容运营","window":"第 5–10 天","deliverable":"英文内容初稿","status":"进行中（模拟）","proposal_id":"proposal_001"},{"task_id":"task_004","title":"发布并记录数据","owner_role":"运营","window":"第 11–25 天","deliverable":"发布记录","status":"待执行（模拟）","proposal_id":"proposal_001"},{"task_id":"task_005","title":"汇总数据并复盘","owner_role":"运营 / 分析","window":"第 26–30 天","deliverable":"月度复盘报告","status":"待执行（模拟）","proposal_id":"proposal_001"}],"sample":{"linkedin_post":"Teams lose time when important knowledge is scattered across documents and conversations. An AI-powered knowledge assistant can help teams find relevant information faster and keep work moving. If your team is exploring better ways to manage internal knowledge, here's a practical use case to consider: start with the three documents your team searches for most often, connect them to one assistant, and measure how often people find answers without asking a colleague.\n\nCurious how other small teams structure this? We put together a short checklist — comment \"checklist\" and we'll share it.","topic_plan":[{"title":"Why scattered knowledge slows small teams down","angle":"知识分散带来的时间成本，用具体工作场景切入"},{"title":"5 document workflows you can automate with AI","angle":"文档审阅、周报、FAQ 等可自动化的流程清单"},{"title":"A practical guide to building a team knowledge base","angle":"从 0 到 1 搭建知识库的步骤与常见误区"},{"title":"How to evaluate an AI assistant before rolling it out","angle":"评估维度：准确性、权限、集成与团队接受度"}],"notes":"以上内容为 LumenFlow Analytics 的演示交付样例：未使用客户真实数据，发布前需由客户确认产品卖点、可公开案例与 CTA 指向的落地页。","generated_by":"template"}},"lead_004":{"analysis":{"lead_id":"lead_004","company_name":"Cotidi Labs","score":29,"priority":"low","priority_label":"低优先级","dimensions":{"target_market":{"score":10,"max":25,"reason":"只给出「全球」这类宽泛目标，缺少具体市场"},"product_fit":{"score":12,"max":25,"reason":"行业为 AI hardware，AI 相关但服务匹配度一般"},"marketing_gap":{"score":3,"max":25,"reason":"海外内容基础相对完善，缺口有限；资料记录的缺口：hardware launch content lacks localized messaging"},"signals":{"score":4,"max":15,"reason":"已观察到出海信号：running a crowdfunding campaign"},"budget":{"score":0,"max":10,"reason":"预算未知（不默认给高分）"}},"reasons":["只给出「全球」这类宽泛目标，缺少具体市场","行业为 AI hardware，AI 相关但服务匹配度一般","海外内容基础相对完善，缺口有限；资料记录的缺口：hardware launch content lacks localized messaging","已观察到出海信号：running a crowdfunding campaign"],"pain_points":["可能存在的缺口：hardware launch content lacks localized messaging"],"questions":["目前进入 Global 的节奏和目标是什么？","现有英文官网、内容与社媒数据大致处于什么水平？","这一轮试点的预算范围、决策人和审批流程是怎样的？"],"facts":["企业类型：AI hardware","当前市场：China","目标市场：Global"],"to_verify":["暂无预算线索","running a crowdfunding campaign"],"is_demo_data":true},"explanation":"**结论：建议暂缓跟进（29 分 / 低优先级）**\n\n**评分依据**\n- 只给出「全球」这类宽泛目标，缺少具体市场\n- 行业为 AI hardware，AI 相关但服务匹配度一般\n- 海外内容基础相对完善，缺口有限；资料记录的缺口：hardware launch content lacks localized messaging\n- 已观察到出海信号：running a crowdfunding campaign\n\n**可能存在的海外营销痛点**\n- 可能存在的缺口：hardware launch content lacks localized messaging\n\n**首次沟通值得验证的问题**\n1. 目前进入 Global 的节奏和目标是什么？\n2. 现有英文官网、内容与社媒数据大致处于什么水平？\n3. 这一轮试点的预算范围、决策人和审批流程是怎样的？\n\n> 以上为基于模拟资料的规则判断，关键信息需在沟通中确认。","contact_email":{"subject":"Exploring Cotidi Labs's growth in Global","body":"Hi there,\n\nI came across Cotidi Labs and your work on AI 会议硬件设备. From what's publicly available, it looks like Global is an active focus for you, and that hardware launch content lacks localized messaging may still be a work in progress.\n\nWe help AI SaaS teams at exactly this stage with:\n- English content and SEO foundations\n- LinkedIn content operations\n- A lightweight lead capture and follow-up process\n\nIf it's useful, I'd be happy to share a few specific content angles for Global and hear how you're approaching the market. Would a 20-minute call next week work for you? No deck required.\n\nBest regards,\n[Your name]\n[Company]","follow_up_plan":[{"day":"第 1 天","channel":"Email","action":"发送首次联系内容，并记录发送时间。"},{"day":"第 4 天","channel":"Email","action":"若无回复，发送简短跟进，补充一个具体的内容选题建议。"},{"day":"第 9 天","channel":"Email","action":"再次联系，附上一份简短的市场内容选题示例（1 页）。"},{"day":"随时","channel":"Email","action":"若对方明确拒绝或要求停止联系，立即停止跟进并记录原因。"}],"notes":"模板生成的演示邮件：仅使用了客户资料中的市场与产品信息，发送前需人工检查，Demo 不会真实发送。","channel":"Email","generated_by":"template"},"contact_linkedin":{"subject":"Quick note on Cotidi Labs's Global content","body":"Hi, I've been following Cotidi Labs's work and noticed Global is a focus for you. I work with AI SaaS teams on English content, LinkedIn operations and early lead generation. If hardware launch content lacks localized messaging is on your roadmap, I'd be glad to share two or three concrete content angles for Global — happy to compare notes in a 20-minute call if useful.","follow_up_plan":[{"day":"第 1 天","channel":"LinkedIn","action":"发送首次联系内容，并记录发送时间。"},{"day":"第 4 天","channel":"LinkedIn","action":"若无回复，发送简短跟进，补充一个具体的内容选题建议。"},{"day":"第 9 天","channel":"LinkedIn","action":"再次联系，附上一份简短的市场内容选题示例（1 页）。"},{"day":"随时","channel":"LinkedIn","action":"若对方明确拒绝或要求停止联系，立即停止跟进并记录原因。"}],"notes":"模板生成的 LinkedIn 演示消息：发送前需人工检查，Demo 不会真实发送。","channel":"LinkedIn","generated_by":"template"},"proposal":{"proposal_id":"proposal_001","lead_id":"lead_004","title":"Cotidi Labs 海外内容营销 30 天试点方案","target_market":"US","duration":"30 天","current_state":"客户当前市场为 China，目标市场为 Global；已知缺口包括 hardware launch content lacks localized messaging。客户回复要点：我们希望先验证美国市场，希望在一个月内提升英文内容曝光，并获得一批有价值的潜在客户。目前团队没有专职海外内容运营人员，希望先做一个小规模试点。","objectives":["验证 US 市场的英文内容方向","在一个月内提升英文内容的曝光与互动","获得一批可人工筛选的初步潜在客户"],"audience_hypothesis":["美国中小团队中负责运营、知识与文档协作的管理者","正在评估 AI 文档 / 知识助手的团队负责人","关注团队效率与知识沉淀的运营与 HR 角色"],"services":["受众与竞品内容分析","英文内容选题与撰写","US 市场 LinkedIn 内容运营","英文 SEO 内容基础建设","线索收集与初步筛选"],"workstream":["第 1–4 天：受众与竞品分析，确认产品卖点与内容基调","第 5–10 天：完成 4 篇英文内容选题与初稿","第 11–25 天：在 LinkedIn 与英文官网 / Blog 发布并互动","第 26–30 天：汇总数据、复盘并给出下一轮建议"],"deliverables":["英文内容选题表（4 条）","4 篇英文内容（LinkedIn + Blog）","发布记录与互动记录","线索汇总表","月度复盘报告"],"metrics":["内容曝光量","互动率（互动 / 曝光）","官网访问量（内容渠道）","潜在线索数与有效线索数"],"open_questions":["目标客户画像与优先级（团队规模、行业、决策角色）","产品卖点与可公开引用的客户案例","现有官网数据与转化路径","试点预算范围与审批流程"],"status":"draft","generated_by":"template","is_demo_data":true},"proposal_md":"### Cotidi Labs 海外内容营销 30 天试点方案\n\n**目标市场：** US　|　**执行周期：** 30 天\n\n**1. 客户现状与核心目标**\n\n客户当前市场为 China，目标市场为 Global；已知缺口包括 hardware launch content lacks localized messaging。客户回复要点：我们希望先验证美国市场，希望在一个月内提升英文内容曝光，并获得一批有价值的潜在客户。目前团队没有专职海外内容运营人员，希望先做一个小规模试点。\n\n- 验证 US 市场的英文内容方向\n- 在一个月内提升英文内容的曝光与互动\n- 获得一批可人工筛选的初步潜在客户\n\n**2. 目标市场与受众假设**\n\n- 美国中小团队中负责运营、知识与文档协作的管理者\n- 正在评估 AI 文档 / 知识助手的团队负责人\n- 关注团队效率与知识沉淀的运营与 HR 角色\n\n**3. 服务范围**\n\n- 受众与竞品内容分析\n- 英文内容选题与撰写\n- US 市场 LinkedIn 内容运营\n- 英文 SEO 内容基础建设\n- 线索收集与初步筛选\n\n**4. 执行节奏**\n\n- 第 1–4 天：受众与竞品分析，确认产品卖点与内容基调\n- 第 5–10 天：完成 4 篇英文内容选题与初稿\n- 第 11–25 天：在 LinkedIn 与英文官网 / Blog 发布并互动\n- 第 26–30 天：汇总数据、复盘并给出下一轮建议\n\n**5. 交付物**\n\n- 英文内容选题表（4 条）\n- 4 篇英文内容（LinkedIn + Blog）\n- 发布记录与互动记录\n- 线索汇总表\n- 月度复盘报告\n\n**6. 效果衡量指标**\n\n- 内容曝光量\n- 互动率（互动 / 曝光）\n- 官网访问量（内容渠道）\n- 潜在线索数与有效线索数\n\n**7. 待客户确认的问题**\n\n- 目标客户画像与优先级（团队规模、行业、决策角色）\n- 产品卖点与可公开引用的客户案例\n- 现有官网数据与转化路径\n- 试点预算范围与审批流程\n\n> 以上为模拟试点方案，不构成对实际曝光量、访问量或线索数量的保证。\n","tasks":[{"task_id":"task_001","title":"确认目标受众与产品卖点","owner_role":"策略","window":"第 1–2 天","deliverable":"受众画像、卖点表","status":"已完成（模拟）","proposal_id":"proposal_001"},{"task_id":"task_002","title":"制定英文内容选题","owner_role":"内容运营","window":"第 3–4 天","deliverable":"选题表","status":"已完成（模拟）","proposal_id":"proposal_001"},{"task_id":"task_003","title":"撰写英文内容","owner_role":"内容运营","window":"第 5–10 天","deliverable":"英文内容初稿","status":"进行中（模拟）","proposal_id":"proposal_001"},{"task_id":"task_004","title":"发布并记录数据","owner_role":"运营","window":"第 11–25 天","deliverable":"发布记录","status":"待执行（模拟）","proposal_id":"proposal_001"},{"task_id":"task_005","title":"汇总数据并复盘","owner_role":"运营 / 分析","window":"第 26–30 天","deliverable":"月度复盘报告","status":"待执行（模拟）","proposal_id":"proposal_001"}],"sample":{"linkedin_post":"Teams lose time when important knowledge is scattered across documents and conversations. An AI-powered knowledge assistant can help teams find relevant information faster and keep work moving. If your team is exploring better ways to manage internal knowledge, here's a practical use case to consider: start with the three documents your team searches for most often, connect them to one assistant, and measure how often people find answers without asking a colleague.\n\nCurious how other small teams structure this? We put together a short checklist — comment \"checklist\" and we'll share it.","topic_plan":[{"title":"Why scattered knowledge slows small teams down","angle":"知识分散带来的时间成本，用具体工作场景切入"},{"title":"5 document workflows you can automate with AI","angle":"文档审阅、周报、FAQ 等可自动化的流程清单"},{"title":"A practical guide to building a team knowledge base","angle":"从 0 到 1 搭建知识库的步骤与常见误区"},{"title":"How to evaluate an AI assistant before rolling it out","angle":"评估维度：准确性、权限、集成与团队接受度"}],"notes":"以上内容为 Cotidi Labs 的演示交付样例：未使用客户真实数据，发布前需由客户确认产品卖点、可公开案例与 CTA 指向的落地页。","generated_by":"template"}},"lead_005":{"analysis":{"lead_id":"lead_005","company_name":"Verba Health AI","score":37,"priority":"low","priority_label":"低优先级","dimensions":{"target_market":{"score":0,"max":25,"reason":"没有明确的目标市场"},"product_fit":{"score":25,"max":25,"reason":"行业为 AI SaaS，与 AI SaaS 目标客户高度匹配"},"marketing_gap":{"score":12,"max":25,"reason":"海外内容体系仍在建设中；资料记录的缺口：no clear overseas market priority"},"signals":{"score":0,"max":15,"reason":"暂未观察到近期出海动作"},"budget":{"score":0,"max":10,"reason":"预算未知（不默认给高分）"}},"reasons":["行业为 AI SaaS，与 AI SaaS 目标客户高度匹配","海外内容体系仍在建设中；资料记录的缺口：no clear overseas market priority"],"pain_points":["可能存在的缺口：no clear overseas market priority"],"questions":["目前进入 目标市场 的节奏和目标是什么？","现有英文官网、内容与社媒数据大致处于什么水平？","这一轮试点的预算范围、决策人和审批流程是怎样的？"],"facts":["企业类型：AI SaaS","当前市场：China","目标市场：未说明"],"to_verify":["暂无预算线索"],"is_demo_data":true},"explanation":"**结论：建议暂缓跟进（37 分 / 低优先级）**\n\n**评分依据**\n- 行业为 AI SaaS，与 AI SaaS 目标客户高度匹配\n- 海外内容体系仍在建设中；资料记录的缺口：no clear overseas market priority\n\n**可能存在的海外营销痛点**\n- 可能存在的缺口：no clear overseas market priority\n\n**首次沟通值得验证的问题**\n1. 目前进入 目标市场 的节奏和目标是什么？\n2. 现有英文官网、内容与社媒数据大致处于什么水平？\n3. 这一轮试点的预算范围、决策人和审批流程是怎样的？\n\n> 以上为基于模拟资料的规则判断，关键信息需在沟通中确认。","contact_email":{"subject":"Exploring Verba Health AI's growth in your target markets","body":"Hi there,\n\nI came across Verba Health AI and your work on 面向诊所的 AI 病历与随访工具. From what's publicly available, it looks like your target markets is an active focus for you, and that no clear overseas market priority may still be a work in progress.\n\nWe help AI SaaS teams at exactly this stage with:\n- English content and SEO foundations\n- LinkedIn content operations\n- A lightweight lead capture and follow-up process\n\nIf it's useful, I'd be happy to share a few specific content angles for your target markets and hear how you're approaching the market. Would a 20-minute call next week work for you? No deck required.\n\nBest regards,\n[Your name]\n[Company]","follow_up_plan":[{"day":"第 1 天","channel":"Email","action":"发送首次联系内容，并记录发送时间。"},{"day":"第 4 天","channel":"Email","action":"若无回复，发送简短跟进，补充一个具体的内容选题建议。"},{"day":"第 9 天","channel":"Email","action":"再次联系，附上一份简短的市场内容选题示例（1 页）。"},{"day":"随时","channel":"Email","action":"若对方明确拒绝或要求停止联系，立即停止跟进并记录原因。"}],"notes":"模板生成的演示邮件：仅使用了客户资料中的市场与产品信息，发送前需人工检查，Demo 不会真实发送。","channel":"Email","generated_by":"template"},"contact_linkedin":{"subject":"Quick note on Verba Health AI's your target markets content","body":"Hi, I've been following Verba Health AI's work and noticed your target markets is a focus for you. I work with AI SaaS teams on English content, LinkedIn operations and early lead generation. If no clear overseas market priority is on your roadmap, I'd be glad to share two or three concrete content angles for your target markets — happy to compare notes in a 20-minute call if useful.","follow_up_plan":[{"day":"第 1 天","channel":"LinkedIn","action":"发送首次联系内容，并记录发送时间。"},{"day":"第 4 天","channel":"LinkedIn","action":"若无回复，发送简短跟进，补充一个具体的内容选题建议。"},{"day":"第 9 天","channel":"LinkedIn","action":"再次联系，附上一份简短的市场内容选题示例（1 页）。"},{"day":"随时","channel":"LinkedIn","action":"若对方明确拒绝或要求停止联系，立即停止跟进并记录原因。"}],"notes":"模板生成的 LinkedIn 演示消息：发送前需人工检查，Demo 不会真实发送。","channel":"LinkedIn","generated_by":"template"},"proposal":{"proposal_id":"proposal_001","lead_id":"lead_005","title":"Verba Health AI 海外内容营销 30 天试点方案","target_market":"US","duration":"30 天","current_state":"客户当前市场为 China，目标市场为 待确认；已知缺口包括 no clear overseas market priority。客户回复要点：我们希望先验证美国市场，希望在一个月内提升英文内容曝光，并获得一批有价值的潜在客户。目前团队没有专职海外内容运营人员，希望先做一个小规模试点。","objectives":["验证 US 市场的英文内容方向","在一个月内提升英文内容的曝光与互动","获得一批可人工筛选的初步潜在客户"],"audience_hypothesis":["美国中小团队中负责运营、知识与文档协作的管理者","正在评估 AI 文档 / 知识助手的团队负责人","关注团队效率与知识沉淀的运营与 HR 角色"],"services":["受众与竞品内容分析","英文内容选题与撰写","US 市场 LinkedIn 内容运营","英文 SEO 内容基础建设","线索收集与初步筛选"],"workstream":["第 1–4 天：受众与竞品分析，确认产品卖点与内容基调","第 5–10 天：完成 4 篇英文内容选题与初稿","第 11–25 天：在 LinkedIn 与英文官网 / Blog 发布并互动","第 26–30 天：汇总数据、复盘并给出下一轮建议"],"deliverables":["英文内容选题表（4 条）","4 篇英文内容（LinkedIn + Blog）","发布记录与互动记录","线索汇总表","月度复盘报告"],"metrics":["内容曝光量","互动率（互动 / 曝光）","官网访问量（内容渠道）","潜在线索数与有效线索数"],"open_questions":["目标客户画像与优先级（团队规模、行业、决策角色）","产品卖点与可公开引用的客户案例","现有官网数据与转化路径","试点预算范围与审批流程"],"status":"draft","generated_by":"template","is_demo_data":true},"proposal_md":"### Verba Health AI 海外内容营销 30 天试点方案\n\n**目标市场：** US　|　**执行周期：** 30 天\n\n**1. 客户现状与核心目标**\n\n客户当前市场为 China，目标市场为 待确认；已知缺口包括 no clear overseas market priority。客户回复要点：我们希望先验证美国市场，希望在一个月内提升英文内容曝光，并获得一批有价值的潜在客户。目前团队没有专职海外内容运营人员，希望先做一个小规模试点。\n\n- 验证 US 市场的英文内容方向\n- 在一个月内提升英文内容的曝光与互动\n- 获得一批可人工筛选的初步潜在客户\n\n**2. 目标市场与受众假设**\n\n- 美国中小团队中负责运营、知识与文档协作的管理者\n- 正在评估 AI 文档 / 知识助手的团队负责人\n- 关注团队效率与知识沉淀的运营与 HR 角色\n\n**3. 服务范围**\n\n- 受众与竞品内容分析\n- 英文内容选题与撰写\n- US 市场 LinkedIn 内容运营\n- 英文 SEO 内容基础建设\n- 线索收集与初步筛选\n\n**4. 执行节奏**\n\n- 第 1–4 天：受众与竞品分析，确认产品卖点与内容基调\n- 第 5–10 天：完成 4 篇英文内容选题与初稿\n- 第 11–25 天：在 LinkedIn 与英文官网 / Blog 发布并互动\n- 第 26–30 天：汇总数据、复盘并给出下一轮建议\n\n**5. 交付物**\n\n- 英文内容选题表（4 条）\n- 4 篇英文内容（LinkedIn + Blog）\n- 发布记录与互动记录\n- 线索汇总表\n- 月度复盘报告\n\n**6. 效果衡量指标**\n\n- 内容曝光量\n- 互动率（互动 / 曝光）\n- 官网访问量（内容渠道）\n- 潜在线索数与有效线索数\n\n**7. 待客户确认的问题**\n\n- 目标客户画像与优先级（团队规模、行业、决策角色）\n- 产品卖点与可公开引用的客户案例\n- 现有官网数据与转化路径\n- 试点预算范围与审批流程\n\n> 以上为模拟试点方案，不构成对实际曝光量、访问量或线索数量的保证。\n","tasks":[{"task_id":"task_001","title":"确认目标受众与产品卖点","owner_role":"策略","window":"第 1–2 天","deliverable":"受众画像、卖点表","status":"已完成（模拟）","proposal_id":"proposal_001"},{"task_id":"task_002","title":"制定英文内容选题","owner_role":"内容运营","window":"第 3–4 天","deliverable":"选题表","status":"已完成（模拟）","proposal_id":"proposal_001"},{"task_id":"task_003","title":"撰写英文内容","owner_role":"内容运营","window":"第 5–10 天","deliverable":"英文内容初稿","status":"进行中（模拟）","proposal_id":"proposal_001"},{"task_id":"task_004","title":"发布并记录数据","owner_role":"运营","window":"第 11–25 天","deliverable":"发布记录","status":"待执行（模拟）","proposal_id":"proposal_001"},{"task_id":"task_005","title":"汇总数据并复盘","owner_role":"运营 / 分析","window":"第 26–30 天","deliverable":"月度复盘报告","status":"待执行（模拟）","proposal_id":"proposal_001"}],"sample":{"linkedin_post":"Teams lose time when important knowledge is scattered across documents and conversations. An AI-powered knowledge assistant can help teams find relevant information faster and keep work moving. If your team is exploring better ways to manage internal knowledge, here's a practical use case to consider: start with the three documents your team searches for most often, connect them to one assistant, and measure how often people find answers without asking a colleague.\n\nCurious how other small teams structure this? We put together a short checklist — comment \"checklist\" and we'll share it.","topic_plan":[{"title":"Why scattered knowledge slows small teams down","angle":"知识分散带来的时间成本，用具体工作场景切入"},{"title":"5 document workflows you can automate with AI","angle":"文档审阅、周报、FAQ 等可自动化的流程清单"},{"title":"A practical guide to building a team knowledge base","angle":"从 0 到 1 搭建知识库的步骤与常见误区"},{"title":"How to evaluate an AI assistant before rolling it out","angle":"评估维度：准确性、权限、集成与团队接受度"}],"notes":"以上内容为 Verba Health AI 的演示交付样例：未使用客户真实数据，发布前需由客户确认产品卖点、可公开案例与 CTA 指向的落地页。","generated_by":"template"}}},"review":{"computed":{"published_posts":4,"impressions":8000,"engagements":240,"website_visits":320,"leads":12,"qualified_leads":5,"engagement_rate":0.03,"visit_rate":0.04,"lead_rate":0.0375,"qualified_lead_share":0.4166666666666667,"targets":{"engagement_rate":0.025,"visit_rate":0.035,"qualified_lead_share":0.4},"posts":[{"title":"Why scattered knowledge slows small teams down","topic":"knowledge management","impressions":3200,"engagements":120,"website_visits":180,"leads":7,"qualified_leads":4,"engagement_rate":0.0375,"visit_rate":0.05625,"lead_rate":0.03888888888888889},{"title":"5 document workflows you can automate with AI","topic":"document automation","impressions":2400,"engagements":70,"website_visits":90,"leads":3,"qualified_leads":1,"engagement_rate":0.029166666666666667,"visit_rate":0.0375,"lead_rate":0.03333333333333333},{"title":"Lessons from building an AI assistant for teams","topic":"product story","impressions":1600,"engagements":35,"website_visits":30,"leads":1,"qualified_leads":0,"engagement_rate":0.021875,"visit_rate":0.01875,"lead_rate":0.03333333333333333},{"title":"A practical guide to building a team knowledge base","topic":"knowledge base guide","impressions":800,"engagements":15,"website_visits":20,"leads":1,"qualified_leads":0,"engagement_rate":0.01875,"visit_rate":0.025,"lead_rate":0.05}],"is_demo_data":true,"target_checks":[{"name":"互动率","actual":0.03,"target":0.025,"passed":true},{"name":"访问率（曝光 → 官网访问）","actual":0.04,"target":0.035,"passed":true},{"name":"有效线索占比","actual":0.4166666666666667,"target":0.4,"passed":true}]},"summary":["本轮完成 4 篇内容发布，累计 8,000 次模拟曝光，互动率 3.0%，访问率 4.0%。","5 条有效线索占全部 12 条线索的 41.7%，说明内容触达了部分目标受众，但仍需人工核验线索质量。","内容表现分化明显：「Why scattered knowledge slows small teams down」带来 180 次官网访问，访问率 5.6%。相比之下，「Lessons from building an AI assistant for teams」曝光 1600 但访问率仅 1.9%。"],"issues":["曝光和线索集中在少数主题上，长尾内容对转化贡献有限。","有效线索仍需人工核验，当前无法判断线索质量是否稳定。","缺少落地页与表单层面的细分数据，难以定位访问到线索的流失点。"],"next_actions":["下一轮优先围绕表现最好的知识管理主题扩展 2–3 篇内容。","对曝光较高但访问较低的内容，优化 CTA 与落地页信息一致性。","对访问较高但线索较少的页面，检查表单长度、产品价值表达与转化路径。","为每条内容设定唯一的主导 CTA，并按渠道添加 UTM 标记，便于归因。"],"feedback_to_next_round":["把知识管理主题加入下一轮内容选题表，并提高其内容占比。","在下一轮方案中补充「落地页与表单优化」工作项。","为每篇内容设定明确的线索目标，复盘时按主题对比转化率。"],"generated_by":"template"}}</script>
+<script>
+const DATA = JSON.parse(document.getElementById('demo-data').textContent);
+const STEPS = ["① 客户分析","② 客户联系","③ 方案撰写","④ 执行交付","⑤ 数据复盘"];
+const DIM_LABELS = {"target_market":"目标市场明确度","product_fit":"产品与服务匹配度",
+  "marketing_gap":"海外营销缺口","signals":"近期出海信号","budget":"预算 / 合作可能性"};
+const state = {step:0, leadId:DATA.leads[0].id, channel:"Email",
+  showExplanation:false, showContact:false, showProposal:false, showSample:false, showReview:false,
+  taskStatus:null, subject:null, body:null};
+const $ = (s)=>document.querySelector(s);
+const esc = (s)=>String(s==null?"":s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const pct = (v)=>(v*100).toFixed(1)+"%";
+const cur = ()=>DATA.leads.find(l=>l.id===state.leadId);
+const snap = ()=>DATA.per_lead[state.leadId];
+
+function toast(msg){
+  const t=$("#toast"); t.textContent=msg; t.classList.add("show");
+  clearTimeout(t._h); t._h=setTimeout(()=>t.classList.remove("show"),1900);
+}
+function md(text){
+  const lines=String(text||"").split(/\r?\n/); let out=[]; let list=null;
+  const inline=(s)=>esc(s).replace(/\*\*(.+?)\*\*/g,"<strong>$1</strong>")
+    .replace(/`([^`]+)`/g,"<code>$1</code>");
+  const closeList=()=>{ if(list){out.push("</"+list+">"); list=null;} };
+  for(const raw of lines){
+    const line=raw.trim();
+    if(!line){ closeList(); continue; }
+    let m;
+    if((m=line.match(/^(#{1,6})\s+(.*)$/))){
+      closeList(); out.push("<h4>"+inline(m[2])+"</h4>"); continue;
+    }
+    if((m=line.match(/^>\s?(.*)$/))){ closeList(); out.push("<blockquote>"+inline(m[1])+"</blockquote>"); continue; }
+    if(/^-\s+/.test(line)){ if(list!=="ul"){closeList(); out.push("<ul>"); list="ul";}
+      out.push("<li>"+inline(line.replace(/^-\s+/,""))+"</li>"); continue; }
+    if((m=line.match(/^\d+\.\s+(.*)$/))){ if(list!=="ol"){closeList(); out.push("<ol>"); list="ol";}
+      out.push("<li>"+inline(m[1])+"</li>"); continue; }
+    closeList(); out.push("<p>"+inline(line)+"</p>");
+  }
+  closeList(); return out.join("\n");
+}
+
+function renderNav(){
+  $("#nav").innerHTML = STEPS.map((s,i)=>
+    '<button class="nav-btn'+(i===state.step?" active":"")+'" data-step="'+i+'">'+s+'</button>').join("");
+  $("#nav").querySelectorAll("button").forEach(b=>b.onclick=()=>go(+b.dataset.step));
+  $("#lead-select").innerHTML = DATA.leads.map(l=>{
+    const a=DATA.per_lead[l.id].analysis;
+    return '<option value="'+l.id+'"'+(l.id===state.leadId?" selected":"")+'>'+esc(l.company_name)+" · "+a.score+" 分</option>";
+  }).join("");
+  $("#lead-select").onchange=(e)=>{ state.leadId=e.target.value; resetLeadState(); render(); };
+}
+function resetLeadState(){
+  state.showExplanation=false; state.showContact=false; state.showProposal=false;
+  state.showSample=false; state.showReview=false; state.taskStatus=null; state.subject=null; state.body=null;
+}
+function go(i){ state.step=i; render(); window.scrollTo({top:0,behavior:"smooth"}); }
+
+function stepAnalysis(){
+  const lead=cur(), a=snap().analysis;
+  const overview = DATA.leads.map(l=>{
+    const an=DATA.per_lead[l.id].analysis;
+    return {company:l.company_name, industry:l.industry, cm:l.current_market,
+      tm:(l.target_markets||[]).join("、")||"未说明", score:an.score, label:an.priority_label, p:an.priority};
+  });
+  const dimRows = Object.entries(a.dimensions).map(([k,v])=>
+    "<tr><td>"+DIM_LABELS[k]+"</td><td>"+v.score+" / "+v.max+"</td><td>"+esc(v.reason)+"</td></tr>").join("");
+  const facts = a.facts.map(f=>"<li>"+esc(f)+"</li>").join("");
+  const verify = a.to_verify.map(f=>"<li>"+esc(f)+"</li>").join("");
+  return `
+  <h2>① 潜在客户分析：优先跟进谁，为什么？</h2>
+  <div class="sub">评分由规则计算（市场 25 + 匹配度 25 + 缺口 25 + 信号 15 + 预算 10），AI 只负责解释。</div>
+  <div class="tbl-wrap"><table>
+    <thead><tr><th>企业</th><th>行业</th><th>当前市场</th><th>目标市场</th><th>评分</th><th>优先级</th></tr></thead>
+    <tbody>${overview.map(o=>`<tr><td><strong>${esc(o.company)}</strong></td><td>${esc(o.industry)}</td>
+      <td>${esc(o.cm)}</td><td>${esc(o.tm)}</td><td>${o.score}</td>
+      <td><span class="pill ${o.p}">${esc(o.label)}</span></td></tr>`).join("")}
+    </tbody></table></div>
+  <div class="divider"></div>
+  <div class="grid g3">
+    <div class="card">
+      <h4>${esc(lead.company_name)}</h4>
+      <div><strong>产品：</strong>${esc(lead.product)}</div>
+      <div><strong>行业：</strong>${esc(lead.industry)}</div>
+      <div><strong>目标市场：</strong>${esc((lead.target_markets||[]).join("、")||"未说明")}</div>
+      <div class="caption">官网：${esc(lead.website)} · ${esc(lead.notes)}</div>
+    </div>
+    <div class="card">
+      <div class="k" style="font-size:12px;color:var(--muted)">匹配分</div>
+      <div style="font-size:26px;font-weight:650">${a.score} <small style="font-size:14px;color:var(--muted)">/ 100</small></div>
+      <div class="bar"><i style="width:${a.score}%"></i></div>
+    </div>
+    <div class="card">
+      <div style="font-size:12px;color:var(--muted)">优先级</div>
+      <div style="margin-top:8px"><span class="pill ${a.priority}">${esc(a.priority_label)}</span></div>
+    </div>
+  </div>
+  <h3>评分维度</h3>
+  <div class="tbl-wrap"><table><thead><tr><th>维度</th><th>得分</th><th>依据</th></tr></thead>
+    <tbody>${dimRows}</tbody></table></div>
+  <div class="grid g2" style="margin-top:16px">
+    <div class="card"><strong>已知事实</strong><ul style="margin:8px 0 0;padding-left:20px">${facts}</ul></div>
+    <div class="card"><strong>需要核验 / 确认</strong><ul style="margin:8px 0 0;padding-left:20px">${verify}</ul></div>
+  </div>
+  <div class="row" style="margin-top:20px">
+    <button class="act ghost" data-act="explain">生成推荐理由与验证问题（AI）</button>
+    <button class="act" data-act="toContact">生成联系建议并进入第 2 步</button>
+  </div>
+  <div class="card ${state.showExplanation?"step-fade":"hidden"}" style="margin-top:16px">
+    <div class="md">${md(snap().explanation)}</div>
+    <div class="caption">规则 / 模板生成（原版可切换大模型）。</div>
+  </div>`;
+}
+
+function stepContact(){
+  const lead=cur(), a=snap().analysis;
+  const c = state.channel==="Email" ? snap().contact_email : snap().contact_linkedin;
+  const subject = state.subject!=null && state.subjectFor===state.channel ? state.subject : c.subject;
+  const body = state.body!=null && state.subjectFor===state.channel ? state.body : c.body;
+  const plan = c.follow_up_plan.map(p=>`<tr><td>${esc(p.day)}</td><td>${esc(p.channel)}</td><td>${esc(p.action)}</td></tr>`).join("");
+  return `
+  <h2>② 潜在客户联系：准备怎样的联系内容，如何跟进？</h2>
+  <div class="sub">内容为规则 / 模板生成，可人工编辑；Demo 不会真实发送。</div>
+  <div class="grid g3">
+    <div class="card" style="grid-column:span 2">
+      <label class="fld">联系渠道</label>
+      <div class="seg">
+        <button class="${state.channel==="Email"?"on":""}" data-act="ch-Email">Email</button>
+        <button class="${state.channel==="LinkedIn"?"on":""}" data-act="ch-LinkedIn">LinkedIn</button>
+      </div>
+      <label class="fld">沟通目标</label>
+      <input type="text" value="预约 20 分钟需求沟通" id="goal">
+      <div style="margin-top:14px"><button class="act" data-act="regenContact">生成 / 重新生成联系内容</button></div>
+    </div>
+    <div class="card">
+      <div style="font-size:12px;color:var(--muted)">客户</div>
+      <div style="font-size:18px;font-weight:650;margin-bottom:10px">${esc(lead.company_name)}</div>
+      <div style="font-size:12px;color:var(--muted)">匹配分</div>
+      <div style="font-size:22px;font-weight:650">${a.score} <small style="font-size:13px;color:var(--muted)">/ 100</small></div>
+      <div style="margin-top:10px"><span class="pill ${a.priority}">${esc(a.priority_label)}</span></div>
+    </div>
+  </div>
+  <div class="divider"></div>
+  <label class="fld">主题</label>
+  <input type="text" id="subject" value="${esc(subject)}">
+  <label class="fld">正文（可人工编辑）</label>
+  <textarea id="body" rows="12">${esc(body)}</textarea>
+  <h3>跟进计划</h3>
+  <div class="tbl-wrap"><table><thead><tr><th>时间</th><th>渠道</th><th>动作</th></tr></thead>
+    <tbody>${plan}</tbody></table></div>
+  <div class="caption">生成方式：规则 / 模板。${esc(c.notes)} 本 Demo 不会真实发送邮件或消息。</div>
+  <div class="row" style="margin-top:20px">
+    <button class="act" data-act="toProposal">模拟客户已回复，进入方案撰写 →</button>
+  </div>`;
+}
+
+function stepProposal(){
+  const lead=cur(), p=snap().proposal;
+  return `
+  <h2>③ 方案撰写：把客户需求整理成一页式试点方案</h2>
+  <div class="sub">基于客户资料与模拟回复生成 30 天试点方案，内容可人工调整。</div>
+  <label class="fld">模拟客户回复（可编辑）</label>
+  <textarea id="reply" rows="3">我们希望先验证美国市场，希望在一个月内提升英文内容曝光，并获得一批有价值的潜在客户。目前团队没有专职海外内容运营人员，希望先做一个小规模试点。</textarea>
+  <div class="row" style="margin-top:14px">
+    <button class="act" data-act="genProposal">生成 30 天试点方案</button>
+  </div>
+  <div class="${state.showProposal?"step-fade":"hidden"}" style="margin-top:18px">
+    <div class="card">
+      <div class="md">${md(snap().proposal_md)}</div>
+    </div>
+    <div class="caption">生成方式：规则 / 模板。方案为模拟内容，不代表效果承诺。</div>
+    <div class="row" style="margin-top:18px">
+      <button class="act" data-act="toDelivery">确认方案（模拟），拆解执行任务 →</button>
+    </div>
+  </div>`;
+}
+
+function stepDelivery(){
+  const p=snap().proposal;
+  const tasks = snap().tasks;
+  const statuses = state.taskStatus || tasks.map(t=>t.status);
+  const rows = tasks.map((t,i)=>`<tr><td>${esc(t.title)}</td><td>${esc(t.owner_role)}</td><td>${esc(t.window)}</td>
+    <td>${esc(t.deliverable)}</td><td>
+    <select class="status-sel" data-i="${i}">${["待执行（模拟）","进行中（模拟）","已完成（模拟）"]
+      .map(s=>`<option${statuses[i]===s?" selected":""}>${s}</option>`).join("")}</select></td></tr>`).join("");
+  const completed = statuses.filter(s=>s.indexOf("已完成")===0).length;
+  const sample = snap().sample;
+  const topics = sample.topic_plan.map(t=>`<tr><td>${esc(t.title)}</td><td>${esc(t.angle)}</td></tr>`).join("");
+  return `
+  <h2>④ 执行交付：把方案变成任务，并展示一个交付样例</h2>
+  <div class="sub">任务状态仅保存在当前页面会话中，可切换查看效果。</div>
+  <div class="grid g3">
+    <div class="metric"><div class="k">任务总数</div><div class="v">${tasks.length}</div></div>
+    <div class="metric"><div class="k">已完成（模拟）</div><div class="v">${completed}</div></div>
+    <div class="metric"><div class="k">方案周期</div><div class="v">${esc(p.duration)}</div></div>
+  </div>
+  <h3>执行任务</h3>
+  <div class="tbl-wrap"><table><thead><tr><th>任务</th><th>负责人角色</th><th>时间</th><th>交付物</th><th>状态</th></tr></thead>
+    <tbody>${rows}</tbody></table></div>
+  <div class="caption">任务状态仅保存在当前 Demo 会话中。</div>
+  <div class="divider"></div>
+  <h3>交付样例：一条 LinkedIn 内容草稿</h3>
+  <div class="${state.showSample?"step-fade":"hidden"}">
+    <label class="fld">LinkedIn 草稿（可编辑）</label>
+    <textarea id="draft" rows="9">${esc(sample.linkedin_post)}</textarea>
+    <div class="tbl-wrap" style="margin-top:14px"><table><thead><tr><th>英文选题</th><th>切入角度</th></tr></thead>
+      <tbody>${topics}</tbody></table></div>
+    <div class="caption">${esc(sample.notes)}</div>
+    <div class="row" style="margin-top:18px">
+      <button class="act" data-act="toReview">进入数据复盘 →</button>
+    </div>
+  </div>
+  <div class="row ${state.showSample?"hidden":""}" style="margin-top:14px">
+    <button class="act" data-act="genSample">生成交付样例</button>
+  </div>`;
+}
+
+function stepReview(){
+  const r=DATA.review, c=r.computed;
+  const cards=[["内容发布",c.published_posts],["总曝光",c.impressions.toLocaleString()],
+    ["总互动",c.engagements.toLocaleString()],["官网访问",c.website_visits.toLocaleString()],
+    ["潜在线索",c.leads],["有效线索",c.qualified_leads]];
+  const checks = [["互动率",c.engagement_rate,c.targets.engagement_rate],
+    ["官网访问率",c.visit_rate,c.targets.visit_rate],
+    ["有效线索占比",c.qualified_lead_share,c.targets.qualified_lead_share]]
+    .map(([n,a,t])=>`<tr><td>${n}</td><td>${pct(a)}</td><td>${pct(t)}</td>
+      <td><span class="pill ${a>=t?"ok":"bad"}">${a>=t?"达标":"未达标"}</span></td></tr>`).join("");
+  const posts = c.posts.map(p=>`<tr><td>${esc(p.title)}</td><td>${esc(p.topic)}</td>
+    <td>${p.impressions.toLocaleString()}</td><td>${pct(p.engagement_rate)}</td>
+    <td>${p.website_visits}</td><td>${pct(p.visit_rate)}</td><td>${p.leads}</td><td>${p.qualified_leads}</td></tr>`).join("");
+  return `
+  <h2>⑤ 数据复盘：判断效果并提出下一轮改进</h2>
+  <div class="sub">以下为本轮模拟营销数据（非真实业绩）。</div>
+  <div class="grid g6">${cards.map(([k,v])=>`<div class="metric"><div class="k">${k}</div><div class="v">${v}</div></div>`).join("")}</div>
+  <h3>目标达成检查</h3>
+  <div class="tbl-wrap"><table><thead><tr><th>指标</th><th>本轮结果</th><th>试点目标</th><th>结论</th></tr></thead>
+    <tbody>${checks}</tbody></table></div>
+  <h3>分内容表现</h3>
+  <div class="tbl-wrap"><table><thead><tr><th>内容</th><th>主题</th><th>曝光</th><th>互动率</th>
+    <th>官网访问</th><th>访问率</th><th>线索</th><th>有效线索</th></tr></thead><tbody>${posts}</tbody></table></div>
+  <div class="row" style="margin-top:18px">
+    <button class="act" data-act="genReview">生成复盘结论与下一轮建议（AI）</button>
+  </div>
+  <div class="${state.showReview?"step-fade":"hidden"}" style="margin-top:16px">
+    <div class="card">
+      <h4>本轮结论</h4>
+      <ul>${r.summary.map(s=>"<li>"+esc(s)+"</li>").join("")}</ul>
+      <h4 style="margin-top:14px">发现的问题</h4>
+      <ul>${r.issues.map(s=>"<li>"+esc(s)+"</li>").join("")}</ul>
+      <h4 style="margin-top:14px">下一轮建议</h4>
+      <ul>${r.next_actions.map(s=>"<li>"+esc(s)+"</li>").join("")}</ul>
+      <div class="caption">复盘文本由规则生成；原版可切换大模型增强。</div>
+    </div>
+  </div>`;
+}
+
+const RENDERERS=[stepAnalysis,stepContact,stepProposal,stepDelivery,stepReview];
+function render(){
+  renderNav();
+  const html=RENDERERS[state.step]();
+  $("#main").innerHTML=html;
+  $("#main").classList.remove("step-fade"); void $("#main").offsetWidth; $("#main").classList.add("step-fade");
+  bind();
+}
+function bind(){
+  document.querySelectorAll("[data-act]").forEach(el=>{
+    el.onclick=()=>handle(el.dataset.act);
+  });
+  const sub=$("#subject"), body=$("#body");
+  if(sub) sub.oninput=()=>{ state.subject=sub.value; state.subjectFor=state.channel; };
+  if(body) body.oninput=()=>{ state.body=body.value; state.subjectFor=state.channel; };
+  const draft=$("#draft");
+  if(draft) draft.oninput=()=>{ snap().sample.linkedin_post=draft.value; };
+  document.querySelectorAll(".status-sel").forEach(sel=>{
+    sel.onchange=()=>{
+      if(!state.taskStatus) state.taskStatus=snap().tasks.map(t=>t.status);
+      state.taskStatus[+sel.dataset.i]=sel.value;
+      render();
+    };
+  });
+}
+function handle(act){
+  if(act==="explain"){ state.showExplanation=true; render(); toast("已生成推荐理由（规则 / 模板）"); return; }
+  if(act==="toContact"){ go(1); return; }
+  if(act && act.startsWith("ch-")){ state.channel=act.slice(3); resetContactEdits(); render(); return; }
+  if(act==="regenContact"){ resetContactEdits(); render(); toast("已按「"+state.channel+"」重新生成"); return; }
+  if(act==="toProposal"){ go(2); return; }
+  if(act==="genProposal"){ state.showProposal=true; render(); toast("已生成 30 天试点方案"); return; }
+  if(act==="toDelivery"){ go(3); return; }
+  if(act==="genSample"){ state.showSample=true; render(); toast("已生成交付样例"); return; }
+  if(act==="toReview"){ go(4); return; }
+  if(act==="genReview"){ state.showReview=true; render(); toast("已生成复盘结论"); return; }
+}
+function resetContactEdits(){ state.subject=null; state.body=null; state.subjectFor=null; }
+
+render();
+</script>
+</body>
+</html>

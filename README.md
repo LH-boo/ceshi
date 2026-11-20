@@ -54,6 +54,15 @@ streamlit run app.py
 
 ≥80 高优先级，60–79 中优先级，<60 低优先级。评分由规则计算，LLM 仅负责解释与文案。
 
+## 在线静态演示（GitHub Pages）
+
+Streamlit 需要 Python 服务端，无法直接由 GitHub Pages 托管。仓库内的 `docs/index.html` 是原应用的静态快照：
+五个环节的评分、邮件、方案、任务与复盘内容，均由同一套 Python 规则 / 模板离线生成后内嵌到页面中，可直接在浏览器打开。
+
+访问地址：https://lh-boo.github.io/ceshi/
+
+> 首次使用需在仓库 Settings → Pages 中把 Source 设为 `Deploy from a branch`，分支 `main`、目录 `/docs`。
+
 ## 演示说明
 
 - NovaMind AI 为虚构客户，评分 86 分，用于串起完整流程。
