@@ -1,0 +1,111 @@
+[
+  {
+    "id": "lead_001",
+    "company_name": "NovaMind AI",
+    "industry": "AI SaaS",
+    "product": "面向中小团队的 AI 文档与知识助手",
+    "website": "https://example.com/novamind-ai",
+    "current_market": "China",
+    "target_markets": ["US", "UK"],
+    "english_content": "minimal",
+    "overseas_social": false,
+    "content_activity": "low",
+    "marketing_gaps": [
+      "limited English content",
+      "low overseas brand awareness",
+      "no consistent overseas lead source"
+    ],
+    "signals": [
+      "public roadmap mentions a US launch",
+      "hiring an overseas growth role"
+    ],
+    "budget_status": "estimated",
+    "budget_note": "预算假设：每月 3,000–5,000 美元（Demo 假设，未经确认）",
+    "notes": "模拟数据，需对照官网、招聘信息和社媒动态做来源核验。"
+  },
+  {
+    "id": "lead_002",
+    "company_name": "Pixelforge Studio",
+    "industry": "AI SaaS",
+    "product": "AI 视觉素材生成工具（团队订阅制）",
+    "website": "https://example.com/pixelforge",
+    "current_market": "Germany",
+    "target_markets": ["Germany", "France"],
+    "english_content": "moderate",
+    "overseas_social": true,
+    "content_activity": "medium",
+    "marketing_gaps": [
+      "content localized mostly for DACH region",
+      "limited localized landing pages"
+    ],
+    "signals": [
+      "published an English product page",
+      "attended an EU design conference"
+    ],
+    "budget_status": "unknown",
+    "budget_note": "暂无预算线索",
+    "notes": "模拟数据，需核验其本地化进展。"
+  },
+  {
+    "id": "lead_003",
+    "company_name": "LumenFlow Analytics",
+    "industry": "AI SaaS",
+    "product": "面向电商团队的 AI 数据分析平台",
+    "website": "https://example.com/lumenflow",
+    "current_market": "China",
+    "target_markets": ["US"],
+    "english_content": "minimal",
+    "overseas_social": false,
+    "content_activity": "medium",
+    "marketing_gaps": [
+      "no English SEO content",
+      "few overseas case studies"
+    ],
+    "signals": [
+      "publishing English blog posts since Q3"
+    ],
+    "budget_status": "explicit",
+    "budget_note": "Demo 假设：已为海外推广预留季度预算",
+    "notes": "模拟数据，预算状态需与销售确认。"
+  },
+  {
+    "id": "lead_004",
+    "company_name": "Cotidi Labs",
+    "industry": "AI hardware",
+    "product": "AI 会议硬件设备",
+    "website": "https://example.com/cotidi",
+    "current_market": "China",
+    "target_markets": ["Global"],
+    "english_content": "moderate",
+    "overseas_social": true,
+    "content_activity": "high",
+    "marketing_gaps": [
+      "hardware launch content lacks localized messaging"
+    ],
+    "signals": [
+      "running a crowdfunding campaign"
+    ],
+    "budget_status": "unknown",
+    "budget_note": "暂无预算线索",
+    "notes": "模拟数据；硬件类客户与内容营销服务的匹配度较低。"
+  },
+  {
+    "id": "lead_005",
+    "company_name": "Verba Health AI",
+    "industry": "AI SaaS",
+    "product": "面向诊所的 AI 病历与随访工具",
+    "website": "https://example.com/verba",
+    "current_market": "China",
+    "target_markets": [],
+    "english_content": "strong",
+    "overseas_social": false,
+    "content_activity": "medium",
+    "marketing_gaps": [
+      "no clear overseas market priority"
+    ],
+    "signals": [],
+    "budget_status": "unknown",
+    "budget_note": "暂无预算线索",
+    "notes": "模拟数据；医疗行业合规要求高，出海意图尚不明确。"
+  }
+]

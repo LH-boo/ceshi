@@ -1,0 +1,56 @@
+{
+  "campaign_id": "campaign_001",
+  "lead_id": "lead_001",
+  "channel": "LinkedIn + English Blog",
+  "period": "第 1–30 天（模拟）",
+  "is_demo_data": true,
+  "published_posts": 4,
+  "impressions": 8000,
+  "engagements": 240,
+  "website_visits": 320,
+  "leads": 12,
+  "qualified_leads": 5,
+  "targets": {
+    "engagement_rate": 0.025,
+    "visit_rate": 0.035,
+    "qualified_lead_share": 0.4
+  },
+  "posts": [
+    {
+      "title": "Why scattered knowledge slows small teams down",
+      "topic": "knowledge management",
+      "impressions": 3200,
+      "engagements": 120,
+      "website_visits": 180,
+      "leads": 7,
+      "qualified_leads": 4
+    },
+    {
+      "title": "5 document workflows you can automate with AI",
+      "topic": "document automation",
+      "impressions": 2400,
+      "engagements": 70,
+      "website_visits": 90,
+      "leads": 3,
+      "qualified_leads": 1
+    },
+    {
+      "title": "Lessons from building an AI assistant for teams",
+      "topic": "product story",
+      "impressions": 1600,
+      "engagements": 35,
+      "website_visits": 30,
+      "leads": 1,
+      "qualified_leads": 0
+    },
+    {
+      "title": "A practical guide to building a team knowledge base",
+      "topic": "knowledge base guide",
+      "impressions": 800,
+      "engagements": 15,
+      "website_visits": 20,
+      "leads": 1,
+      "qualified_leads": 0
+    }
+  ]
+}
